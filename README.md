@@ -11,7 +11,9 @@ _Scrape the Road to the Sea blog into one page_
 ## Super-quick Start
 
 Requires: Python 3.10 to 3.13
-
+```commandline
+uv run road-to-the-sea
+```
 Install through pip:
 
 ```bash
