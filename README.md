@@ -5,15 +5,21 @@
 
 # road-to-the-sea-scraper
 
-_Scrape the Road to the Sea blog into one page_
+_Scrape the [Road to the Sea](https://roadtothesea.com/) blog into one page, just to make it easier to read_
 
 
 ## Super-quick Start
 
 Requires: Python 3.10 to 3.13
+
 ```commandline
 uv run road-to-the-sea
 ```
+or
+```commandline
+./src/road_to_the_sea_scraper/main.py
+```
+
 Install through pip:
 
 ```bash
