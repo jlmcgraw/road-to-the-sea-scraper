@@ -3,6 +3,21 @@
 SHELL:=/bin/bash
 PACKAGE_TARGET:=src/road_to_the_sea_scraper
 
+UV := uv
+RUN := $(UV) run --group dev
+
+RUFF := $(RUN) ruff
+MYPY := $(RUN) mypy
+PYTEST := $(RUN) pytest
+BASEDPYRITE := $(RUN) basedpyright
+MKDOCS := $(RUN) mkdocs
+TYPOS := $(RUN) typos
+
+SRC_DIR := src
+TEST_DIR := tests
+
+install:
+	$(UV) sync --group dev
 
 # ==== Helpers =========================================================================================================
 .PHONY: confirm
@@ -34,19 +49,19 @@ qa: qa/full  ## Shortcut for qa/full
 
 .PHONY: qa/test
 qa/test:  ## Run the tests
-	uv run pytest
+	$(PYTEST) $(TEST_DIR)
 
 
 .PHONY: qa/types
 qa/types:  ## Run static type checks
-	uv run mypy ${PACKAGE_TARGET} tests --pretty
-	uv run basedpyright ${PACKAGE_TARGET} tests
+	$(MYPY) ${PACKAGE_TARGET} tests --pretty
+	$(BASEDPYRITE) ${PACKAGE_TARGET} tests
 
 
 .PHONY: qa/lint
 qa/lint:  ## Run linters
-	uv run ruff check ${PACKAGE_TARGET} tests
-	uv run typos ${PACKAGE_TARGET} tests
+	$(RUFF) check ${PACKAGE_TARGET} tests
+	$(TYPOS) ${PACKAGE_TARGET} tests
 
 
 .PHONY: qa/full
@@ -55,9 +70,9 @@ qa/full: qa/format qa/test qa/lint qa/types  ## Run the full set of quality chec
 
 
 .PHONY: qa/format
-qa/format:  ## Run code formatters
-	uv run ruff format ${PACKAGE_TARGET} tests
-	uv run ruff check --select I --fix ${PACKAGE_TARGET} tests
+qa/format:  # Run code formatters
+	$(RUFF) format ${PACKAGE_TARGET} tests
+	$(RUFF) check --select I --fix ${PACKAGE_TARGET} tests
 
 
 # ==== Documentation ===================================================================================================
@@ -67,12 +82,12 @@ docs: docs/serve  ## Shortcut for docs/serve
 
 .PHONY: docs/build
 docs/build:  ## Build the documentation
-	uv run mkdocs build --config-file=docs/mkdocs.yaml
+	$(MKDOCS) build --config-file=docs/mkdocs.yaml
 
 
 .PHONY: docs/serve
 docs/serve:  ## Build the docs and start a local dev server
-	uv run mkdocs serve --config-file=docs/mkdocs.yaml --dev-addr=localhost:10000
+	$(MKDOCS) serve --config-file=docs/mkdocs.yaml --dev-addr=localhost:10000
 
 
 # ==== Other Commands ==================================================================================================
